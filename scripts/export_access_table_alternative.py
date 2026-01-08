@@ -227,11 +227,14 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Export all records
+  # Export all records (no deletion)
   python export_access_table_alternative.py
   
-  # Export records from a specific date range
+  # Export records from a specific date range (no deletion)
   python export_access_table_alternative.py --start-date 2024-01-01 --end-date 2024-12-31
+  
+  # Export and prompt for deletion
+  python export_access_table_alternative.py --start-date 2024-01-01 --end-date 2024-12-31 --delete
   
   # Export records from a specific date onwards
   python export_access_table_alternative.py --start-date 2024-06-01
@@ -260,9 +263,9 @@ Examples:
         help=f'Name of the date field in the table (default: {DATE_FIELD})'
     )
     parser.add_argument(
-        '--no-delete',
+        '--delete',
         action='store_true',
-        help='Skip the delete prompt and only export data'
+        help='Prompt to delete records after export (default: export only)'
     )
     
     args = parser.parse_args()
@@ -341,9 +344,10 @@ Examples:
         traceback.print_exc()
         sys.exit(1)
 
-    # Skip delete if --no-delete flag is set
-    if args.no_delete:
-        print("\nSkipping delete operation (--no-delete flag set).")
+    # Only prompt to delete if --delete flag is set
+    if not args.delete:
+        print("\nExport complete. Records were NOT deleted.")
+        print("(Use --delete flag to enable record deletion)")
         print("Script completed successfully.")
         return
 

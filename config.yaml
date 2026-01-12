@@ -1,8 +1,18 @@
 # Configuration file for timekeeping migrator
 # Update these values with your actual paths
 
+##### Access Export Parms
 # Path to the Access database file
 path_to_access_db: "C:\\testData\\AGE-Projects_be.accdb"
+# Dates in MM-DD-YYYY format
+start_date: "01-01-2024"
+end_date: "01-03-2024"
 
+###### CSV Builder Parms
+# !!! Be extremely careful changing this one, script uses latest flag
+# Path to the SQLite database file (exported by export_to_sqlite.py)
+sqlite_database_path: ""
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # SQL query file to use for exporting data
-query_file_used: "C:\\testData\\export_query.sql"
+query_file_used: ".\\BQE_Export_Query.sql"
+

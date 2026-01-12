@@ -671,6 +671,15 @@ Examples:
         # Use the default
         access_db_path = args.access_db
     
+    # Determine start_date and end_date: use command-line args, then config, then None
+    start_date_input = args.start_date
+    if not start_date_input and config.get('start_date'):
+        start_date_input = config.get('start_date')
+    
+    end_date_input = args.end_date
+    if not end_date_input and config.get('end_date'):
+        end_date_input = config.get('end_date')
+    
     # Create timestamped output directory in project root
     timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -687,36 +696,36 @@ Examples:
     start_date = None
     end_date = None
     
-    if args.start_date:
+    if start_date_input:
         try:
-            for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y']:
+            for fmt in ['%m-%d-%Y', '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y', '%d-%m-%Y']:
                 try:
-                    dt = datetime.datetime.strptime(args.start_date, fmt)
+                    dt = datetime.datetime.strptime(start_date_input, fmt)
                     start_date = dt.strftime('%m/%d/%Y')
                     break
                 except ValueError:
                     continue
             if not start_date:
-                raise ValueError(f"Could not parse start date: {args.start_date}")
+                raise ValueError(f"Could not parse start date: {start_date_input}")
         except Exception as e:
             print(f"ERROR: Invalid start date format: {e}")
-            print("Use format: YYYY-MM-DD or MM/DD/YYYY")
+            print("Use format: MM-DD-YYYY, YYYY-MM-DD, or MM/DD/YYYY")
             sys.exit(1)
     
-    if args.end_date:
+    if end_date_input:
         try:
-            for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y']:
+            for fmt in ['%m-%d-%Y', '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y', '%d-%m-%Y']:
                 try:
-                    dt = datetime.datetime.strptime(args.end_date, fmt)
+                    dt = datetime.datetime.strptime(end_date_input, fmt)
                     end_date = dt.strftime('%m/%d/%Y')
                     break
                 except ValueError:
                     continue
             if not end_date:
-                raise ValueError(f"Could not parse end date: {args.end_date}")
+                raise ValueError(f"Could not parse end date: {end_date_input}")
         except Exception as e:
             print(f"ERROR: Invalid end date format: {e}")
-            print("Use format: YYYY-MM-DD or MM/DD/YYYY")
+            print("Use format: MM-DD-YYYY, YYYY-MM-DD, or MM/DD/YYYY")
             sys.exit(1)
     
     # Check if database file exists

@@ -6,6 +6,7 @@ multiple related tables to both Excel files and a SQLite database.
 Supports filtering by date range for the main billing table.
 """
 
+
 import os
 import sys
 import datetime
@@ -13,6 +14,18 @@ import pandas as pd
 import sqlite3
 import argparse
 import yaml
+import pywintypes
+import datetime as dt
+import pywintypes
+import subprocess
+import traceback
+
+try:
+    import win32com.client
+except ImportError:
+    print("ERROR: pywin32 is not installed.")
+    print("Install it with: pip install pywin32")
+    sys.exit(1)
 
 # Configuration
 ACCESS_DB = r"C:\testData\AGE-Projects_be.accdb"
@@ -41,7 +54,7 @@ def load_config():
 def cleanup_access_processes():
     """Kill any lingering Access processes on Windows."""
     try:
-        import subprocess
+        
         # Use taskkill to forcefully close any remaining MSACCESS.EXE processes
         subprocess.run(['taskkill', '/F', '/IM', 'MSACCESS.EXE'], 
                       capture_output=True, timeout=5)
@@ -64,9 +77,7 @@ def export_table_to_dataframe(access, table_name, date_field=None, start_date=No
         
     Returns:
         pandas DataFrame with the table data
-    """
-    import pywintypes
-    import datetime as dt
+    """    
     
     print(f"\n  Exporting table '{table_name}'...")
     
@@ -160,12 +171,7 @@ def export_to_sqlite_and_excel(db_path, output_sqlite, output_excel_dir,
     Returns:
         Dictionary with export statistics
     """
-    try:
-        import win32com.client
-    except ImportError:
-        print("ERROR: pywin32 is not installed.")
-        print("Install it with: pip install pywin32")
-        sys.exit(1)
+    
     
     stats = {}
     
@@ -240,9 +246,7 @@ def export_to_sqlite_and_excel(db_path, output_sqlite, output_excel_dir,
                     projectid_list = ', '.join([str(pid) for pid in unique_projectids])
                     sql = f"SELECT * FROM [{table_name}] WHERE [projectid] IN ({projectid_list})"
                     
-                    # Execute query
-                    import pywintypes
-                    import datetime as dt
+              
                     
                     db = access.CurrentDb()
                     rs = db.OpenRecordset(sql)
@@ -311,8 +315,7 @@ def export_to_sqlite_and_excel(db_path, output_sqlite, output_excel_dir,
                     sql = f"SELECT * FROM [{table_name}] WHERE [clientid] IN ({clientid_list})"
                     
                     # Execute query
-                    import pywintypes
-                    import datetime as dt
+                    
                     
                     db = access.CurrentDb()
                     rs = db.OpenRecordset(sql)
@@ -372,10 +375,7 @@ def export_to_sqlite_and_excel(db_path, output_sqlite, output_excel_dir,
                     payitemid_list = ', '.join([str(pid) for pid in unique_payitemids])
                     sql = f"SELECT * FROM [{table_name}] WHERE [payitemid] IN ({payitemid_list})"
                     
-                    # Execute query
-                    import pywintypes
-                    import datetime as dt
-                    
+                                
                     db = access.CurrentDb()
                     rs = db.OpenRecordset(sql)
                     
@@ -535,7 +535,7 @@ def dump_sqlite_database(sqlite_path):
         
     except Exception as e:
         print(f"ERROR: Failed to dump database: {e}")
-        import traceback
+        
         traceback.print_exc()
 
 
@@ -780,7 +780,6 @@ Examples:
         
     except Exception as e:
         print(f"\nERROR: Failed to export tables: {e}")
-        import traceback
         traceback.print_exc()
         sys.exit(1)
     
@@ -820,7 +819,6 @@ Examples:
             print(f"SUCCESS: Records have been deleted from '{MAIN_TABLE}'.")
         except Exception as e:
             print(f"ERROR: Failed to delete records: {e}")
-            import traceback
             traceback.print_exc()
             sys.exit(1)
     else:

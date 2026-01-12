@@ -12,12 +12,43 @@ import datetime
 import pandas as pd
 import sqlite3
 import argparse
+import yaml
 
 # Configuration
 ACCESS_DB = r"C:\testData\AGE-Projects_be.accdb"
 MAIN_TABLE = "tblClientBilling"
 RELATED_TABLES = ["tblProject", "tblClient", "tblPayItem"]
 DATE_FIELD = "date"  # Name of the date field in the main table
+
+
+def load_config():
+    """Load configuration from config.yaml in the project root."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    config_path = os.path.join(project_root, 'config.yaml')
+    
+    if os.path.exists(config_path):
+        try:
+            with open(config_path, 'r') as f:
+                config = yaml.safe_load(f)
+                return config if config else {}
+        except Exception as e:
+            print(f"Warning: Could not load config.yaml: {e}")
+            return {}
+    return {}
+
+
+def cleanup_access_processes():
+    """Kill any lingering Access processes on Windows."""
+    try:
+        import subprocess
+        # Use taskkill to forcefully close any remaining MSACCESS.EXE processes
+        subprocess.run(['taskkill', '/F', '/IM', 'MSACCESS.EXE'], 
+                      capture_output=True, timeout=5)
+        print("Cleaned up Access processes")
+    except Exception as e:
+        # Silently fail if unable to kill process (it may not exist)
+        pass
 
 
 def export_table_to_dataframe(access, table_name, date_field=None, start_date=None, end_date=None):
@@ -626,6 +657,20 @@ Examples:
     
     args = parser.parse_args()
     
+    # Load configuration from config.yaml
+    config = load_config()
+    
+    # Determine the Access database path: use command-line arg, then config, then default
+    if args.access_db != ACCESS_DB:
+        # User provided a command-line argument
+        access_db_path = args.access_db
+    elif config.get('path_to_access_db'):
+        # Use value from config.yaml
+        access_db_path = config.get('path_to_access_db')
+    else:
+        # Use the default
+        access_db_path = args.access_db
+    
     # Create timestamped output directory in project root
     timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -675,7 +720,6 @@ Examples:
             sys.exit(1)
     
     # Check if database file exists
-    access_db_path = args.access_db
     if not os.path.isfile(access_db_path):
         print(f"ERROR: Access database file not found: {access_db_path}")
         sys.exit(1)
@@ -774,6 +818,9 @@ Examples:
         print(f"\n'{MAIN_TABLE}' was NOT modified.")
     
     print("\nScript completed successfully.")
+    
+    # Clean up any lingering Access processes
+    cleanup_access_processes()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 # Excel exports
 *.xlsx
 *.xls
+*.csv
 excel_exports/
 output/
 

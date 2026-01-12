@@ -1,8 +1,8 @@
 select 
 	billing.[date] as [Date],
 	employee as [Employee],
-	concat(billing.projectid, ' | ',billing.projectname) as [Project],
-	concat(payitem.workdescription, ' (', payitem.payitemid, ')') as [Activity],
+	billing.projectid || ' | ' || billing.projectname as [Project],
+	payitem.workdescription || ' (' || payitem.payitemid || ')' as [Activity],
 	billing.payitemName as [Description],
 	billing.quantity as [Hours],
 	'0' as [Cost Rate],
@@ -32,9 +32,9 @@ select
 	client.client as [Client],
 	'0' as [Attachments],
 	'' as [Created By],
-	concat(strftime('%m','now'),'/',strftime('%d','now'),'/',strftime('%Y','now')) as [Created On],
+	strftime('%m','now') || '/' || strftime('%d','now') || '/' || strftime('%Y','now') as [Created On],
 	'' as [Created By],
-	concat(strftime('%m','now'),'/',strftime('%d','now'),'/',strftime('%Y','now')) as [Last Updated]
+	strftime('%m','now') || '/' || strftime('%d','now') || '/' || strftime('%Y','now') as [Last Updated]
 from tblClientBilling billing
 left join tblPayItem payitem on payitem.payitemid = billing.payitemid
 left join tblProject proj on proj.projectid = billing.projectid

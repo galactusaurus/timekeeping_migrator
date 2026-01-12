@@ -1,6 +1,16 @@
 # Excel exports
 *.xlsx
 *.xls
+excel_exports/
+
+# SQLite databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Output directory (timestamped exports)
+output/
 
 # Python
 __pycache__/

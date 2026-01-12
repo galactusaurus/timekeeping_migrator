@@ -16,7 +16,7 @@ import argparse
 # Configuration
 ACCESS_DB = r"C:\testData\AGE-Projects_be.accdb"
 MAIN_TABLE = "tblClientBilling"
-RELATED_TABLES = ["tblPayItem", "tblProject"]
+RELATED_TABLES = ["tblProject", "tblClient", "tblPayItem"]
 DATE_FIELD = "date"  # Name of the date field in the main table
 
 
@@ -179,6 +179,16 @@ def export_to_sqlite_and_excel(db_path, output_sqlite, output_excel_dir,
         df_main.to_excel(excel_file, index=False, engine='openpyxl')
         
         # Export related tables (no date filtering, but optional project filtering)
+        # Track unique clientids from filtered tblProject for tblClient filtering
+        # Track unique payitemids from filtered tblClientBilling for tblPayItem filtering
+        unique_clientids = None
+        unique_payitemids = None
+        
+        # Extract payitemids from main table for tblPayItem filtering
+        if filter_project and 'payitemid' in df_main.columns:
+            unique_payitemids = df_main['payitemid'].dropna().unique().tolist()
+            print(f"\n  Found {len(unique_payitemids)} unique payitemids in {MAIN_TABLE}")
+        
         for table_name in RELATED_TABLES:
             # Special handling for tblProject if filter flag is set
             if table_name == "tblProject" and filter_project:
@@ -192,11 +202,144 @@ def export_to_sqlite_and_excel(db_path, output_sqlite, output_excel_dir,
                     print(f"    No projectids found - creating empty table")
                     df = pd.DataFrame()
                     stats[table_name] = 0
+                    unique_clientids = []
                 else:
                     # Build SQL query with IN clause for filtering
                     # Convert projectids to strings for SQL query
                     projectid_list = ', '.join([str(pid) for pid in unique_projectids])
                     sql = f"SELECT * FROM [{table_name}] WHERE [projectid] IN ({projectid_list})"
+                    
+                    # Execute query
+                    import pywintypes
+                    import datetime as dt
+                    
+                    db = access.CurrentDb()
+                    rs = db.OpenRecordset(sql)
+                    
+                    # Get field names
+                    field_count = rs.Fields.Count
+                    columns = [rs.Fields.Item(i).Name for i in range(field_count)]
+                    
+                    # Check if recordset is empty
+                    if rs.EOF and rs.BOF:
+                        print(f"    No matching records found")
+                        rs.Close()
+                        df = pd.DataFrame(columns=columns)
+                        stats[table_name] = 0
+                        unique_clientids = []
+                    else:
+                        # Read all data row-by-row
+                        data = []
+                        row_count = 0
+                        rs.MoveFirst()
+                        
+                        while not rs.EOF:
+                            row = []
+                            for col_idx in range(field_count):
+                                try:
+                                    value = rs.Fields.Item(col_idx).Value
+                                    # Convert pywintypes datetime objects
+                                    if isinstance(value, pywintypes.TimeType):
+                                        try:
+                                            value = dt.datetime(value.year, value.month, value.day,
+                                                              value.hour, value.minute, value.second)
+                                        except:
+                                            value = None
+                                    row.append(value)
+                                except:
+                                    row.append(None)
+                            data.append(row)
+                            row_count += 1
+                            rs.MoveNext()
+                        
+                        rs.Close()
+                        print(f"    Read {row_count} filtered rows")
+                        
+                        # Create DataFrame
+                        df = pd.DataFrame(data, columns=columns)
+                        stats[table_name] = len(df)
+                        
+                        # Extract unique clientids from filtered tblProject for filtering tblClient
+                        if 'clientid' in df.columns:
+                            unique_clientids = df['clientid'].dropna().unique().tolist()
+                            print(f"    Found {len(unique_clientids)} unique clientids in filtered {table_name}")
+                        else:
+                            unique_clientids = []
+            
+            # Special handling for tblClient if filter flag is set
+            elif table_name == "tblClient" and filter_project and unique_clientids is not None:
+                print(f"\n  Exporting table '{table_name}' (filtered by clientid in filtered {RELATED_TABLES[0]})...")
+                
+                if len(unique_clientids) == 0:
+                    print(f"    No clientids found - creating empty table")
+                    df = pd.DataFrame()
+                    stats[table_name] = 0
+                else:
+                    # Build SQL query with IN clause for filtering by clientid
+                    clientid_list = ', '.join([str(cid) for cid in unique_clientids])
+                    sql = f"SELECT * FROM [{table_name}] WHERE [clientid] IN ({clientid_list})"
+                    
+                    # Execute query
+                    import pywintypes
+                    import datetime as dt
+                    
+                    db = access.CurrentDb()
+                    rs = db.OpenRecordset(sql)
+                    
+                    # Get field names
+                    field_count = rs.Fields.Count
+                    columns = [rs.Fields.Item(i).Name for i in range(field_count)]
+                    
+                    # Check if recordset is empty
+                    if rs.EOF and rs.BOF:
+                        print(f"    No matching records found")
+                        rs.Close()
+                        df = pd.DataFrame(columns=columns)
+                        stats[table_name] = 0
+                    else:
+                        # Read all data row-by-row
+                        data = []
+                        row_count = 0
+                        rs.MoveFirst()
+                        
+                        while not rs.EOF:
+                            row = []
+                            for col_idx in range(field_count):
+                                try:
+                                    value = rs.Fields.Item(col_idx).Value
+                                    # Convert pywintypes datetime objects
+                                    if isinstance(value, pywintypes.TimeType):
+                                        try:
+                                            value = dt.datetime(value.year, value.month, value.day,
+                                                              value.hour, value.minute, value.second)
+                                        except:
+                                            value = None
+                                    row.append(value)
+                                except:
+                                    row.append(None)
+                            data.append(row)
+                            row_count += 1
+                            rs.MoveNext()
+                        
+                        rs.Close()
+                        print(f"    Read {row_count} filtered rows")
+                        
+                        # Create DataFrame
+                        df = pd.DataFrame(data, columns=columns)
+                        stats[table_name] = len(df)
+            
+            # Special handling for tblPayItem if filter flag is set
+            elif table_name == "tblPayItem" and filter_project and unique_payitemids is not None:
+                print(f"\n  Exporting table '{table_name}' (filtered by payitemid in {MAIN_TABLE})...")
+                
+                if len(unique_payitemids) == 0:
+                    print(f"    No payitemids found - creating empty table")
+                    df = pd.DataFrame()
+                    stats[table_name] = 0
+                else:
+                    # Build SQL query with IN clause for filtering by payitemid
+                    payitemid_list = ', '.join([str(pid) for pid in unique_payitemids])
+                    sql = f"SELECT * FROM [{table_name}] WHERE [payitemid] IN ({payitemid_list})"
                     
                     # Execute query
                     import pywintypes

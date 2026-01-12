@@ -581,6 +581,12 @@ Examples:
         """
     )
     parser.add_argument(
+        '--access-db',
+        type=str,
+        default=ACCESS_DB,
+        help=f'Path to the Access database file (default: {ACCESS_DB})'
+    )
+    parser.add_argument(
         '--start-date',
         type=str,
         help='Start date for filtering (format: YYYY-MM-DD or MM/DD/YYYY)'
@@ -669,8 +675,9 @@ Examples:
             sys.exit(1)
     
     # Check if database file exists
-    if not os.path.isfile(ACCESS_DB):
-        print(f"ERROR: Access database file not found: {ACCESS_DB}")
+    access_db_path = args.access_db
+    if not os.path.isfile(access_db_path):
+        print(f"ERROR: Access database file not found: {access_db_path}")
         sys.exit(1)
     
     # Export to SQLite and Excel
@@ -678,7 +685,7 @@ Examples:
         print("="*60)
         print("EXPORTING ACCESS DATABASE TO SQLITE AND EXCEL")
         print("="*60)
-        print(f"Source: {ACCESS_DB}")
+        print(f"Source: {access_db_path}")
         print(f"Output directory: {output_dir}")
         print(f"SQLite output: {sqlite_path}")
         print(f"Excel output directory: {excel_dir}")
@@ -696,7 +703,7 @@ Examples:
         print("="*60)
         
         stats = export_to_sqlite_and_excel(
-            ACCESS_DB,
+            access_db_path,
             sqlite_path,
             excel_dir,
             date_field=args.date_field if (start_date or end_date) else None,
@@ -751,7 +758,7 @@ Examples:
         try:
             print(f"\nDeleting records from '{MAIN_TABLE}'...")
             delete_records_from_access(
-                ACCESS_DB,
+                access_db_path,
                 MAIN_TABLE,
                 date_field=args.date_field if (start_date or end_date) else None,
                 start_date=start_date,

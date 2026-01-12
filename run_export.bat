@@ -5,10 +5,23 @@ REM This batch file automates the process of exporting Access data to SQLite and
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
+REM ========================================
+REM Capture Start Time (with seconds)
+REM ========================================
+for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set start_date=%%c-%%a-%%b)
+for /f "tokens=1-3 delims=:." %%a in ("!time!") do (set start_time=%%a:%%b:%%c)
+set START_TIME=!start_date! !start_time!
+set /a START_SECONDS=0
+REM Convert time to seconds for duration calculation
+for /f "tokens=1-3 delims=:." %%a in ("!time!") do (
+    set /a START_SECONDS=%%a*3600+%%b*60+%%c
+)
+
 echo.
 echo ========================================
 echo Timekeeping Migrator - CSV Export Tool
 echo ========================================
+echo Started: !START_TIME!
 echo.
 
 REM ========================================
@@ -84,7 +97,11 @@ echo This may take a moment...
 echo.
 
 REM List of packages to install (excluding built-in modules)
-set "PACKAGES=pandas pywin32 PyYAML"
+REM - pandas: Data manipulation and Excel/CSV export
+REM - pywin32: Windows COM support for Access database
+REM - PyYAML: YAML config file parsing
+REM - openpyxl: Excel file creation (required by pandas.to_excel)
+set "PACKAGES=pandas pywin32 PyYAML openpyxl"
 
 for %%p in (%PACKAGES%) do (
     echo Installing %%p...
@@ -160,12 +177,37 @@ if !QUERY_EXIT_CODE! neq 0 (
 )
 
 REM ========================================
-REM Completion
 REM ========================================
+REM Completion - Capture End Time and Calculate Duration
+REM ========================================
+for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set end_date=%%c-%%a-%%b)
+for /f "tokens=1-3 delims=:." %%a in ("!time!") do (set end_time=%%a:%%b:%%c)
+set END_TIME=!end_date! !end_time!
+
+REM Calculate elapsed time in seconds
+set /a END_SECONDS=0
+for /f "tokens=1-3 delims=:." %%a in ("!time!") do (
+    set /a END_SECONDS=%%a*3600+%%b*60+%%c
+)
+
+REM Handle day wraparound (if end time is before start time, add 24 hours)
+if !END_SECONDS! LSS !START_SECONDS! (
+    set /a END_SECONDS=!END_SECONDS!+86400
+)
+
+set /a DURATION=!END_SECONDS!-!START_SECONDS!
+set /a HOURS=!DURATION!/3600
+set /a MINUTES=(!DURATION! %%3600)/60
+set /a SECONDS=!DURATION! %%60
+
 echo.
 echo ========================================
 echo SUCCESS: Process completed!
 echo ========================================
+echo.
+echo Started:  !START_TIME!
+echo Ended:    !END_TIME!
+echo Duration: !HOURS!h !MINUTES!m !SECONDS!s
 echo.
 echo Your CSV file has been generated in the project root directory
 echo with a timestamp in the filename (results_YYYYMMDD_HHMMSS.csv)

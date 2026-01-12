@@ -1,5 +1,5 @@
 select 
-	billing.[date] as [Date],
+	strftime('%m', billing.[date]) || '/' || strftime('%d', billing.[date]) || '/' || strftime('%Y',billing.[date]) as [Date],
 	employee as [Employee],
 	billing.projectid || ' | ' || billing.projectname as [Project],
 	payitem.workdescription || ' (' || payitem.payitemid || ')' as [Activity],
@@ -39,3 +39,4 @@ from tblClientBilling billing
 left join tblPayItem payitem on payitem.payitemid = billing.payitemid
 left join tblProject proj on proj.projectid = billing.projectid
 left join tblClient client on proj.clientid = client.clientid
+order by billing.[date], billing.employee asc;

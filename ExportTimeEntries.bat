@@ -1,6 +1,24 @@
 @echo off
-REM Timekeeping Migrator - Automated CSV Export Script
-REM This batch file automates the process of exporting Access data to SQLite and then to CSV
+chcp 65001 > nul
+
+echo.
+echo   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+echo   ^|                                                           ^|
+echo   ^|   ███████╗  ██████╗   ███████╗                            ^|
+echo   ^|   ██╔══██║ ██╔════╝   ██╔════╝                            ^|
+echo   ^|   ███████║ ██║  ███╗  █████╗                              ^|
+echo   ^|   ██║  ██║ ██║   ██║  ██╔══╝                              ^|
+echo   ^|   ██║  ██║ ╚██████╔╝  ███████╗                            ^|
+echo   ^|   ╚═╝  ╚═╝  ╚═════╝   ╚══════╝                            ^|
+echo   ^|                                                           ^|
+echo   ^|          TIMEKEEPING MIGRATOR - CSV EXPORT TOOL           ^|
+echo   ^|                     AGE ENGINEERING                       ^|
+echo   ^|                                                           ^|
+echo   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+echo.
+echo.
+echo Timekeeping Migrator - Automated CSV Export Script
+echo This batch file automates the process of exporting Access data to SQLite and then to CSV
 
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
@@ -24,6 +42,8 @@ echo ========================================
 echo Started: !START_TIME!
 echo.
 
+REM ========================================
+REM CONFIGURATION STAGE ----------------------------
 REM ========================================
 REM Step 1: Verify Python is installed
 REM ========================================
@@ -127,6 +147,14 @@ if not exist "config.yaml" (
 echo config.yaml found
 
 REM ========================================
+REM ---- END CONFIGURATION STAGE ----------------------------
+REM ========================================
+
+REM ========================================
+REM EXTRACT STAGE ----------------------------
+REM ========================================
+
+REM ========================================
 REM Step 6: Run Export to SQLite
 REM ========================================
 echo.
@@ -153,6 +181,14 @@ if errorlevel 1 (
 
 echo.
 echo [SUCCESS] Export to SQLite completed successfully
+
+REM ========================================
+REM END EXTRACT STAGE ----------------------------
+REM ========================================
+
+REM ========================================
+REM TRANSFORM STAGE ----------------------------
+REM ========================================
 
 REM ========================================
 REM Step 7: Run Query to CSV
@@ -199,6 +235,11 @@ set /a DURATION=!END_SECONDS!-!START_SECONDS!
 set /a HOURS=!DURATION!/3600
 set /a MINUTES=(!DURATION! %%3600)/60
 set /a SECONDS=!DURATION! %%60
+
+
+REM ========================================
+REM TRANSFORM STAGE ----------------------------
+REM ========================================
 
 echo.
 echo ========================================

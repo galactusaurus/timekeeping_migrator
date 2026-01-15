@@ -1,7 +1,7 @@
 select 
 	strftime('%m', billing.[date]) || '/' || strftime('%d', billing.[date]) || '/' || strftime('%Y',billing.[date]) as [Date],
 	employee as [Employee],
-	proj.projectfilename || ' | ' || billing.projectname as [Project],
+	proj.projectfilename || ' | ' || proj.projectname as [Project],
 	payitem.workdescription as [Activity],
 	billing.detail as [Description],
 	billing.quantity as [Hours],

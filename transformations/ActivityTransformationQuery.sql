@@ -2,7 +2,7 @@ update tblPayItem set workdescription = 'Additional GPS Receiver- No Base Statio
 update tblPayItem set workdescription = 'ATV:' where workdescription = 'ATV';
 update tblPayItem set workdescription = 'ATV (Daily Rate):' where workdescription = 'ATV (Daily Rate)';
 update tblPayItem set workdescription = 'CAD Engineer, E.I.T:' where workdescription = 'CAD Engineer, E.I.T';
-
+update tblPayItem set workdescription = 'CAD Engineer, E.I.T:' where workdescription = 'CAD Engineer, E.I.T. to P.E.';
 update tblPayItem set workdescription = 'CAD Engineer, EIT-PE w/ 4 Yrs Exp:' where workdescription = 'CAD ENGINEER, EIT-PE W/ 4 YRS EXPERIENCE';
 update tblPayItem set workdescription = 'CAD Engineer, EIT-PE w/ 4 Yrs Exp:' where workdescription = 'CAD engineer, EIT-PE with 4 yrs exp';
 update tblPayItem set workdescription = 'CAD Operator, Courthouse Research, Construction Inspection:' where workdescription = 'CAD operator,courthouse research, constr insp';
@@ -24,7 +24,7 @@ update tblPayItem set workdescription = 'EQP2 ATV (4 Wheeler, Gator, etc.):' whe
 update tblPayItem set workdescription = 'EQP3 GPS Base & Rover Unit:' where workdescription = 'EQP3- GPS base rover unit';
 update tblPayItem set workdescription = 'EQP5 Total Station & Data Collector:' where workdescription = 'EQP5- Total station & data collector';
 update tblPayItem set workdescription = 'FAA Approved UAV Pilot and MicroDrones M3000DL:' where workdescription = 'FAA approved UAV Pilot and MicroDrones M3000DL';
-
+update tblPayItem set workdescription = 'FAA Approved UAV Pilot and MicroDrones M3000DL:' where workdescription = 'FAA approved UAV Pilot and MicroDrones M3000DL Dro';
 update tblPayItem set workdescription = 'FAA Approved UAV Pilot and UAV w/ LIDAR Payload:' where workdescription = 'FAA approved UAV Pilot and UAV with LIDAR Payload';
 update tblPayItem set workdescription = 'Field Technichian Incidental:' where workdescription = 'Field Tech Incidental';
 update tblPayItem set workdescription = 'Field Technichian Incidental:' where workdescription = 'Field Technichian Incidental';
@@ -38,29 +38,28 @@ update tblPayItem set workdescription = 'Misc-lodging,meals, reimbursable expens
 update tblPayItem set workdescription = 'Miscellaneous:' where workdescription = 'Miscellaneous';
 update tblPayItem set workdescription = 'Miscellaneous:' where workdescription = 'MISCELLANEOUS EXPENSE';
 update tblPayItem set workdescription = 'Misc-lodging,meals, reimbursable expenses:' where workdescription = 'Misc-lodging,meals, reimbursable expenses';
-
-
-
-
-
+update tblPayItem set workdescription = 'Overhead:' where workdescription = 'OH Equipment Maintenance';
+update tblPayItem set workdescription = 'Overhead:' where workdescription = 'OH Network Administation';
+update tblPayItem set workdescription = 'Overhead:' where workdescription = 'OH Office File Management';
+update tblPayItem set workdescription = 'Overhead:' where workdescription = 'OH Office Management';
+update tblPayItem set workdescription = 'Overhead:' where workdescription = 'OH Travel/ Supply Maintenance';
 update tblPayItem set workdescription = 'One-Man Robotic GPS Crew:' where workdescription = 'One man robotic GPS Crew';
 update tblPayItem set workdescription = 'OP6 Engineer II:' where workdescription = 'OP6- Engineer II';
 update tblPayItem set workdescription = 'OP8 CADD Operator/Design Technician I:' where workdescription = 'OP8-CADD operator/design technician I';
 update tblPayItem set workdescription = 'OP9 CADD Operator/Design Technician II:' where workdescription = 'OP9- CADD operator/Design technician II';
-
+update tblPayItem set workdescription = 'Senior Professional Engineer:' where workdescription = 'P.E. GENERAL CONSULTING FEE';
 update tblPayItem set workdescription = 'Party/Crew Chief:' where workdescription = 'Party/Crew Chief';
 update tblPayItem set workdescription = 'Project Engineer:' where workdescription = 'Project Engineer';
 update tblPayItem set workdescription = 'Project Engineer - Modeling:' where workdescription = 'Project Engineer - Modeling';
-
-
+update tblPayItem set workdescription = 'Project Engineer - PE w/ 5-9 Yrs Exp:' where workdescription = 'Project engineer 5-9 years experience';
+update tblPayItem set workdescription = 'Project Engineer:' where workdescription = 'Project Engineer, P.E.';
 update tblPayItem set workdescription = 'Project Engineer - PE w/ 5-9 Yrs Exp:' where workdescription = 'PROJECT ENGINEER, P.E. WITH 5-9 YEARS EXPERIENCE';
-
-
-
+update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription = 'Real Time GPS ( Trimble R10 system )';
+update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription = 'Real Time GPS ( Trimble R12 system )';
 update tblPayItem set workdescription = 'Real Time GPS (Trimble System) 1 Man Crew:' where workdescription = 'Real Time GPS ( Trimble System )  1 Man Crew';
-
-
-
+update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription = 'REAL TIME GPS (TRIMBLE R10) SYSTEM';
+update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription = 'REAL TIME GPS- 2 MAN CREW';
+update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription = 'Real time GPS(Trimble R8, R10, R12 system) 2 man c';
 update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription = 'Real Time GPS-2 man ( Trimble System )';
 update tblPayItem set workdescription = 'Registered Professional Land Surveyor:' where workdescription = 'Registered Professional Land Surveyor';
 update tblPayItem set workdescription = 'Robotic TS - One Man Crew:' where workdescription = 'ROBOTIC TS- 1 MAN CREW';

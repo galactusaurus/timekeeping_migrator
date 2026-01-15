@@ -1,14 +1,21 @@
 # Configuration file for timekeeping migrator
 # Update these values with your actual paths
 
-##### Access Export Parms
+##### Access Export Params
 # Path to the Access database file
 path_to_access_db: "C:\\testData\\AGE-Projects_be.accdb"
 # Dates in MM-DD-YYYY format
 start_date: "11-23-2025"
-end_date: "12-31-2025"
+end_date: "11-24-2025"
 
-###### CSV Builder Parms
+###### Transformation Params
+## Edit carefully, these transform the data on the way out of access
+transformation_scripts:
+  - name: "Activity Transformation"
+    path: "transformations\\ActivityTransformationQuery.sql"
+    enabled: true
+  
+###### CSV Builder Params
 # !!! Be extremely careful changing this one, script uses latest flag
 # Path to the SQLite database file (exported by export_to_sqlite.py)
 sqlite_database_path: ""

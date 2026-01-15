@@ -187,14 +187,49 @@ REM END EXTRACT STAGE ----------------------------
 REM ========================================
 
 REM ========================================
-REM TRANSFORM STAGE ----------------------------
+REM TRANSFORMATION STAGE ----------------------------
 REM ========================================
 
 REM ========================================
-REM Step 7: Run Query to CSV
+REM Step 7: Run SQL Transformations
 REM ========================================
 echo.
-echo [7/7] Generating CSV report from latest database...
+echo [7/8] Running SQL transformations on database...
+echo.
+
+python scripts\run_transformations.py --latest > "%temp%\transformation_output.txt" 2>&1
+set TRANSFORMATION_EXIT_CODE=%errorlevel%
+
+REM Display transformation output
+type "%temp%\transformation_output.txt"
+
+REM Check for success message
+findstr /M "completed successfully" "%temp%\transformation_output.txt" >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo ERROR: SQL transformations failed
+    echo Please review the output above for details
+    echo.
+    pause
+    exit /b 1
+)
+
+echo.
+echo [SUCCESS] SQL transformations completed successfully
+
+REM ========================================
+REM END TRANSFORMATION STAGE ----------------------------
+REM ========================================
+
+REM ========================================
+REM EXPORT STAGE ----------------------------
+REM ========================================
+
+REM ========================================
+REM Step 8: Run Query to CSV
+REM ========================================
+echo.
+echo [8/8] Generating CSV report from latest database...
 echo.
 
 python scripts\query_to_csv.py --latest > "%temp%\query_output.txt" 2>&1

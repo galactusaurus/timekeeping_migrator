@@ -1,9 +1,9 @@
 select 
 	strftime('%m', billing.[date]) || '/' || strftime('%d', billing.[date]) || '/' || strftime('%Y',billing.[date]) as [Date],
 	employee as [Employee],
-	billing.projectid || ' | ' || billing.projectname as [Project],
+	proj.projectfilename || ' | ' || billing.projectname as [Project],
 	payitem.workdescription as [Activity],
-	billing.payitemName as [Description],
+	billing.detail as [Description],
 	billing.quantity as [Hours],
 	'0' as [Cost Rate],
 	round(billing.projectbillingrate,2) as [Bill Rate],

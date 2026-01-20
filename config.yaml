@@ -5,7 +5,7 @@
 # Path to the Access database file
 path_to_access_db: "C:\\testData\\AGE-Projects_be.accdb"
 # Dates in MM-DD-YYYY format
-start_date: "12-01-2025"
+start_date: "11-23-2025"
 end_date: "01-09-2026"
 
 ###### Transformation Params
@@ -13,6 +13,9 @@ end_date: "01-09-2026"
 transformation_scripts:
   - name: "Activity Transformation"
     path: "transformations\\ActivityTransformationQuery.sql"
+    enabled: true
+  - name: "Project Transformations"
+    path: "transformations\\ProjectTransformations.sql"
     enabled: true
   
 ###### CSV Builder Params

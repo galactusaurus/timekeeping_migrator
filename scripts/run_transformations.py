@@ -110,6 +110,56 @@ def read_sql_file(file_path):
         return f.read()
 
 
+def parse_sql_commands(sql_content):
+    """
+    Parse SQL content into individual commands while respecting quoted strings.
+    
+    This function splits SQL by semicolons but ignores semicolons that appear
+    inside single or double quoted strings.
+    
+    Args:
+        sql_content: The SQL content to parse
+    
+    Returns:
+        List of SQL commands
+    """
+    commands = []
+    current_command = []
+    in_single_quote = False
+    in_double_quote = False
+    i = 0
+    
+    while i < len(sql_content):
+        char = sql_content[i]
+        
+        # Handle single quotes
+        if char == "'" and not in_double_quote:
+            in_single_quote = not in_single_quote
+            current_command.append(char)
+        # Handle double quotes
+        elif char == '"' and not in_single_quote:
+            in_double_quote = not in_double_quote
+            current_command.append(char)
+        # Handle semicolon (command separator)
+        elif char == ';' and not in_single_quote and not in_double_quote:
+            # End of command
+            command_str = ''.join(current_command).strip()
+            if command_str:
+                commands.append(command_str)
+            current_command = []
+        else:
+            current_command.append(char)
+        
+        i += 1
+    
+    # Add any remaining command
+    command_str = ''.join(current_command).strip()
+    if command_str:
+        commands.append(command_str)
+    
+    return commands
+
+
 def execute_transformation_scripts(db_path, script_paths, log_file):
     """
     Execute multiple SQL transformation scripts against a database.
@@ -171,8 +221,8 @@ def execute_transformation_scripts(db_path, script_paths, log_file):
                     log_entries.append("")
                     continue
                 
-                # Split by semicolon to handle multiple commands
-                commands = [cmd.strip() for cmd in sql_content.split(';') if cmd.strip()]
+                # Parse SQL commands while respecting quoted strings
+                commands = parse_sql_commands(sql_content)
                 
                 log_entries.append(f"Number of SQL commands found: {len(commands)}")
                 log_entries.append("")
@@ -332,24 +382,33 @@ Examples:
         if isinstance(script_config, dict):
             # New format with enabled flag
             if script_config.get('enabled', True):  # Default to True if not specified
-                transformation_scripts.append({
-                    'name': script_config.get('name', 'Unnamed'),
-                    'path': script_config.get('path', '')
-                })
+                script_path = script_config.get('path', '').strip()
+                if script_path:  # Only add if path is not empty
+                    transformation_scripts.append({
+                        'name': script_config.get('name', 'Unnamed'),
+                        'path': script_path
+                    })
         elif isinstance(script_config, str):
             # Legacy format - treat as path
-            transformation_scripts.append({
-                'name': script_config,
-                'path': script_config
-            })
+            script_path = script_config.strip()
+            if script_path:  # Only add if path is not empty
+                transformation_scripts.append({
+                    'name': script_path,
+                    'path': script_path
+                })
     
     if not transformation_scripts:
         print("ERROR: No enabled transformation scripts found in config.yaml")
-        print("Make sure at least one script has 'enabled: true'")
+        print("Make sure at least one script has 'enabled: true' and a valid 'path'")
         sys.exit(1)
     
     print(f"\nRunning {len(transformation_scripts)} enabled transformation script(s)...")
     print(f"Database: {db_path}")
+    print("")
+    
+    # Print which scripts will be run
+    for script in transformation_scripts:
+        print(f"  - {script['name']}: {script['path']}")
     print("")
     
     # Extract just the paths for execution

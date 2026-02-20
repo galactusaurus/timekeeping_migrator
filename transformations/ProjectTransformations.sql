@@ -201,3 +201,4 @@ update tblProject set projectname = '26010 | STAKE HOUSE-LOT 28 ON LOVERS LANE' 
 update tblProject set projectname = '33333 | OH Equipment Maintenance' where projectname = 'OH Equipment Maintenance';
 update tblProject set projectname = '55555 | OH Office Management' where projectname = 'OH Office Management';
 update tblProject set projectname = '66666 | OH- Project Management' where projectname = 'OH- Project Management';
+update "tblproject" set projectname = projectfilename || ' | ' || projectname where projectname not like '%|%';

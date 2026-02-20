@@ -1,0 +1,1224 @@
+{
+  "timestamp": "2026-02-19T20:23:45.855771",
+  "total_errors": 152,
+  "total_warnings": 0,
+  "errors": [
+    {
+      "row": 14,
+      "column": "Project",
+      "value": "RETRACE & DIVIDE 30 ACRES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 32,
+      "column": "Project",
+      "value": "MARION CO TAP PERMIT",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 41,
+      "column": "Project",
+      "value": "COFFEY FARM",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 42,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 49,
+      "column": "Project",
+      "value": "ENGINEERING SERVICES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 57,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 58,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 63,
+      "column": "Project",
+      "value": "RETRACE LOT ON KY HWY 300-MAIN ST",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 85,
+      "column": "Project",
+      "value": "WOODBINE-RR & KYTC PERMITS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 119,
+      "column": "Project",
+      "value": "WOODBINE-RR & KYTC PERMITS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 122,
+      "column": "Project",
+      "value": "RETRACE & DIVIDE 30 ACRES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 123,
+      "column": "Project",
+      "value": "COFFEY FARM",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 124,
+      "column": "Project",
+      "value": "MARK PROPERTY LINE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 127,
+      "column": "Project",
+      "value": "RETRACE & DIVIDE 30 ACRES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 128,
+      "column": "Project",
+      "value": "COFFEY FARM",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 129,
+      "column": "Project",
+      "value": "MARK PROPERTY LINE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 145,
+      "column": "Project",
+      "value": "ENGINEERING SERVICES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 153,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 157,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 158,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 160,
+      "column": "Project",
+      "value": "Emergency Operation Center Lot - RCIDA Park #2",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 164,
+      "column": "Project",
+      "value": "CREATING NEW TRACT",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 202,
+      "column": "Project",
+      "value": "2025 OHIO FALLS MONITORING SURVEY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 203,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 214,
+      "column": "Project",
+      "value": "2025 OHIO FALLS MONITORING SURVEY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 238,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 239,
+      "column": "Project",
+      "value": "EW BROWN BESS MONUMENTS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 247,
+      "column": "Project",
+      "value": "Emergency Operation Center Lot - RCIDA Park #2",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 253,
+      "column": "Project",
+      "value": "PROJECT LI-162246 DSP-PAVILLION DRIVE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2321,
+      "column": "Project",
+      "value": "SHARPS BUILDING- KY 914",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2412,
+      "column": "Project",
+      "value": "SHARPS BUILDING- KY 914",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2479,
+      "column": "Project",
+      "value": "LI 16385 PR LONDON-MANCHESTER EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2502,
+      "column": "Project",
+      "value": "FALCON TO SALYERSVILLE FIBER-KYTC PERMITS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2506,
+      "column": "Project",
+      "value": "CUT OUT 4 ACRES-BUTCHERSTOWN RD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2509,
+      "column": "Project",
+      "value": "CUT OUT 4 ACRES-BUTCHERSTOWN RD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2511,
+      "column": "Project",
+      "value": "CUT OUT 4 ACRES-BUTCHERSTOWN RD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2525,
+      "column": "Project",
+      "value": "BLOSS ROAD WATERLINE EXTENSION",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2573,
+      "column": "Project",
+      "value": "LI 16385 PR LONDON-MANCHESTER EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2575,
+      "column": "Project",
+      "value": "LI-171598 LTG LONDON-MANCHESTER 534",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2577,
+      "column": "Project",
+      "value": "FALL ROCK-MANCHESTER STRUCTURE STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2580,
+      "column": "Project",
+      "value": "5252 BARDSTOWN ROAD - GAS EASEMENT Survey and Exhi",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2617,
+      "column": "Project",
+      "value": "GENERAL ENGINEERING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2624,
+      "column": "Project",
+      "value": "5252 BARDSTOWN ROAD - GAS EASEMENT Survey and Exhi",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2628,
+      "column": "Project",
+      "value": "5252 BARDSTOWN ROAD - GAS EASEMENT Survey and Exhi",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2662,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2664,
+      "column": "Project",
+      "value": "FALL ROCK-MANCHESTER STRUCTURE STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2670,
+      "column": "Project",
+      "value": "STAKE PROPERTY LINES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2671,
+      "column": "Project",
+      "value": "STAKE PROPERTY LINES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2672,
+      "column": "Project",
+      "value": "RETRACE LOT IN BRODHEAD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2675,
+      "column": "Project",
+      "value": "DIVIDE PROPERTY @ 775 EPHESUS SCHOOL RD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2676,
+      "column": "Project",
+      "value": "LI-171598 LTG LONDON-MANCHESTER 534",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2678,
+      "column": "Project",
+      "value": "LI 16385 PR LONDON-MANCHESTER EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2681,
+      "column": "Project",
+      "value": "MINEOLA PIKE LINE CONSTRUCTION",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2683,
+      "column": "Project",
+      "value": "FALL ROCK-MANCHESTER STRUCTURE STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2686,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2687,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2691,
+      "column": "Project",
+      "value": "PROPERTY LINE/HWY RIGHT OF WAY SURVEY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2699,
+      "column": "Project",
+      "value": "STAKE PROPERTY LINES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2700,
+      "column": "Project",
+      "value": "RETRACE LOT IN BRODHEAD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2702,
+      "column": "Project",
+      "value": "BURGIN TAP REMOVAL-KYTC PERMITS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2705,
+      "column": "Project",
+      "value": "STAKE PROPERTY LINES",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2706,
+      "column": "Project",
+      "value": "RETRACE LOT IN BRODHEAD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2707,
+      "column": "Project",
+      "value": "CUT OUT 80 ACRES ON US 150",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2708,
+      "column": "Project",
+      "value": "CUT OUT 4 ACRES-BUTCHERSTOWN RD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2709,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2714,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2726,
+      "column": "Project",
+      "value": "MINEOLA PIKE LINE CONSTRUCTION",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2730,
+      "column": "Project",
+      "value": "MINEOLA PIKE LINE CONSTRUCTION",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2731,
+      "column": "Project",
+      "value": "FALL ROCK-MANCHESTER STRUCTURE STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2759,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2761,
+      "column": "Project",
+      "value": "FALL ROCK-MANCHESTER STRUCTURE STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2768,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2769,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2773,
+      "column": "Project",
+      "value": "LI-171598 LTG LONDON-MANCHESTER 534",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2774,
+      "column": "Project",
+      "value": "LI 16385 PR LONDON-MANCHESTER EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2776,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2778,
+      "column": "Project",
+      "value": "PR BIMBLE-LONDON EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2785,
+      "column": "Project",
+      "value": "PROPERTY LINE/HWY RIGHT OF WAY SURVEY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2802,
+      "column": "Project",
+      "value": "RETRACEMENT-KY HWY 1247",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2807,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2829,
+      "column": "Project",
+      "value": "FALL ROCK-MANCHESTER STRUCTURE STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2832,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2833,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2834,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2835,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2836,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2858,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2859,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2860,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2861,
+      "column": "Project",
+      "value": "HAZARD-JACKSON STRUCTURE 60A",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2871,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2874,
+      "column": "Project",
+      "value": "PR BIMBLE-LONDON EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2890,
+      "column": "Project",
+      "value": "PROPERTY LINE/HWY RIGHT OF WAY SURVEY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2897,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2898,
+      "column": "Project",
+      "value": "RETRACE 1036 STONEHILL CT",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2899,
+      "column": "Project",
+      "value": "RETRACE 1036 STONEHILL CT",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2902,
+      "column": "Project",
+      "value": "RETRACE 1036 STONEHILL CT",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2907,
+      "column": "Project",
+      "value": "SHARPS BUILDING- KY 914",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2923,
+      "column": "Project",
+      "value": "PR BIMBLE-LONDON EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2924,
+      "column": "Project",
+      "value": "PROPERTY LINE/HWY RIGHT OF WAY SURVEY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2930,
+      "column": "Project",
+      "value": "PR BIMBLE-LONDON EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2931,
+      "column": "Project",
+      "value": "PR BIMBLE-LONDON EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2932,
+      "column": "Project",
+      "value": "PR BIMBLE-LONDON EASEMENT RESEARCH",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2958,
+      "column": "Project",
+      "value": "BOURBON 7 PIPELINE PROJ- PHASE 1",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2983,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2989,
+      "column": "Project",
+      "value": "HWY 150 PROPERTY IN MT VERNON",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2990,
+      "column": "Project",
+      "value": "HWY 461 MIDLAND FARMS-CONSTRUCTION STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 2994,
+      "column": "Project",
+      "value": "FLOOD STUDY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3040,
+      "column": "Project",
+      "value": "150-39 CRAB ORCHARD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3046,
+      "column": "Project",
+      "value": "HWY 150 PROPERTY IN MT VERNON",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3051,
+      "column": "Project",
+      "value": "LI-167952 -- Mercer Co Solar Line",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3069,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3121,
+      "column": "Project",
+      "value": "LI-167952 -- Mercer Co Solar Line",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3122,
+      "column": "Project",
+      "value": "LI-162892 WEST CLIFF - DANVILLE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3125,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3126,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3128,
+      "column": "Project",
+      "value": "DIVIDE FARM IN CASEY CO",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3130,
+      "column": "Project",
+      "value": "HWY 150 PROPERTY IN MT VERNON",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3131,
+      "column": "Project",
+      "value": "TYNER - SOUTH FORK",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3136,
+      "column": "Project",
+      "value": "TYNER - SOUTH FORK",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3137,
+      "column": "Project",
+      "value": "LI-162892 WEST CLIFF - DANVILLE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3142,
+      "column": "Project",
+      "value": "KU PARK- ROCKY BRANCH- MICHELE LORAN",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3148,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3157,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3172,
+      "column": "Project",
+      "value": "LI-167952 -- Mercer Co Solar Line",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3173,
+      "column": "Project",
+      "value": "LI-162892 WEST CLIFF - DANVILLE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3182,
+      "column": "Project",
+      "value": "LI-167952 -- Mercer Co Solar Line",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3183,
+      "column": "Project",
+      "value": "LI-167952 -- Mercer Co Solar Line",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3184,
+      "column": "Project",
+      "value": "LI-167952 -- Mercer Co Solar Line",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3185,
+      "column": "Project",
+      "value": "LI-162892 WEST CLIFF - DANVILLE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3186,
+      "column": "Project",
+      "value": "LI-162892 WEST CLIFF - DANVILLE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3187,
+      "column": "Project",
+      "value": "LI-162892 WEST CLIFF - DANVILLE",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3208,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3210,
+      "column": "Project",
+      "value": "KY HWY 39",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3214,
+      "column": "Project",
+      "value": "TYNER - SOUTH FORK",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3223,
+      "column": "Project",
+      "value": "NEW CAMP-ORINOCO-GROUND SURVEY",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3237,
+      "column": "Project",
+      "value": "NORRIS ROAD",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3239,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3240,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3249,
+      "column": "Project",
+      "value": "EW BROWN LANDFILL-AERIAL LIDAR SURVEYS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3253,
+      "column": "Project",
+      "value": "BLOSS ROAD WATERLINE EXTENSION",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3298,
+      "column": "Project",
+      "value": "COLEMAN- STONE 69KV LIDAR CORRIDOR",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3300,
+      "column": "Project",
+      "value": "EW BROWN LANDFILL-AERIAL LIDAR SURVEYS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3307,
+      "column": "Project",
+      "value": "EW BROWN LANDFILL-AERIAL LIDAR SURVEYS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3317,
+      "column": "Project",
+      "value": "KY 635",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3322,
+      "column": "Project",
+      "value": "HWY 461 MIDLAND FARMS-CONSTRUCTION STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3323,
+      "column": "Project",
+      "value": "HWY 461 MIDLAND FARMS-CONSTRUCTION STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3325,
+      "column": "Project",
+      "value": "HWY 461 MIDLAND FARMS-CONSTRUCTION STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3326,
+      "column": "Project",
+      "value": "MULTI FAMILY DEVELOPMENT ON TRACT 4B",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3333,
+      "column": "Project",
+      "value": "EW BROWN LANDFILL-AERIAL LIDAR SURVEYS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3336,
+      "column": "Project",
+      "value": "HWY 461 MIDLAND FARMS-CONSTRUCTION STAKING",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    },
+    {
+      "row": 3350,
+      "column": "Project",
+      "value": "EW BROWN LANDFILL-AERIAL LIDAR SURVEYS",
+      "rule": "Project contains pipe delimiter",
+      "regex": "\\|",
+      "description": "Ensures Project column contains '|' character separating project code from name"
+    }
+  ],
+  "warnings": []
+}

@@ -6,7 +6,7 @@
 path_to_access_db: "C:\\testData\\AGE-Projects_be.accdb"
 # Dates in MM-DD-YYYY format
 start_date: "11-23-2025"
-end_date: "01-09-2026"
+end_date: "01-23-2026"
 
 ###### Transformation Params
 ## Edit carefully, these transform the data on the way out of access
@@ -25,4 +25,33 @@ sqlite_database_path: ""
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # SQL query file to use for exporting data
 query_file_used: ".\\BQE_Export_Query.sql"
+
+###### CSV Validation Params
+# Regex validation rules for exported CSV files
+# Each rule validates a specific column against a regex pattern
+# Set enabled: false to skip a rule
+csv_validation_rules:
+  - name: "Project contains pipe delimiter"
+    column: "Project"
+    regex: "\\|"
+    enabled: true
+    description: "Ensures Project column contains '|' character separating project code from name"
+  
+  - name: "Date format validation"
+    column: "Date"
+    regex: "^\\d{1,2}/\\d{1,2}/\\d{4}$"
+    enabled: true
+    description: "Ensures dates follow MM/DD/YYYY or M/D/YYYY format"
+  
+  - name: "Hours is numeric"
+    column: "Hours"
+    regex: "^\\d+(\\.\\d+)?$"
+    enabled: true
+    description: "Ensures Hours column contains valid numeric values"
+  
+  - name: "Billable is boolean"
+    column: "Billable"
+    regex: "^(TRUE|FALSE)$"
+    enabled: true
+    description: "Ensures Billable column contains TRUE or FALSE"
 

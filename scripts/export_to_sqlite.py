@@ -22,6 +22,7 @@ import traceback
 
 try:
     import win32com.client
+    import pythoncom
 except ImportError:
     print("ERROR: pywin32 is not installed.")
     print("Install it with: pip install pywin32")
@@ -590,10 +591,12 @@ def delete_records_from_access(db_path, table_name, date_field=None, start_date=
 
 def main():
     """Main execution function."""
-    parser = argparse.ArgumentParser(
-        description='Export Access database tables to SQLite and Excel.',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
+    pythoncom.CoInitialize()
+    try:
+        parser = argparse.ArgumentParser(
+            description='Export Access database tables to SQLite and Excel.',
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            epilog="""
 Examples:
   # Export all records
   python export_to_sqlite.py
@@ -610,224 +613,226 @@ Examples:
   # Specify custom output directory
   python export_to_sqlite.py --output-dir ./my_output
         """
-    )
-    parser.add_argument(
-        '--access-db',
-        type=str,
-        default=ACCESS_DB,
-        help=f'Path to the Access database file (default: {ACCESS_DB})'
-    )
-    parser.add_argument(
-        '--start-date',
-        type=str,
-        help='Start date for filtering (format: YYYY-MM-DD or MM/DD/YYYY)'
-    )
-    parser.add_argument(
-        '--end-date',
-        type=str,
-        help='End date for filtering (format: YYYY-MM-DD or MM/DD/YYYY)'
-    )
-    parser.add_argument(
-        '--date-field',
-        type=str,
-        default=DATE_FIELD,
-        help=f'Name of the date field in the main table (default: {DATE_FIELD})'
-    )
-    parser.add_argument(
-        '--output-dir',
-        type=str,
-        default='output',
-        help='Base output directory (default: output). A timestamped subfolder will be created.'
-    )
-    parser.add_argument(
-        '--filter-project',
-        action='store_true',
-        help='Filter tblProject to only include projects with projectid in tblClientBilling'
-    )
-    parser.add_argument(
-        '--delete',
-        action='store_true',
-        help='Prompt to delete records from main table after export'
-    )
-    parser.add_argument(
-        '--dump',
-        action='store_true',
-        help='Dump/display the contents of the SQLite database after export'
-    )
-    
-    args = parser.parse_args()
-    
-    # Load configuration from config.yaml
-    config = load_config()
-    
-    # Determine the Access database path: use command-line arg, then config, then default
-    if args.access_db != ACCESS_DB:
-        # User provided a command-line argument
-        access_db_path = args.access_db
-    elif config.get('path_to_access_db'):
-        # Use value from config.yaml
-        access_db_path = config.get('path_to_access_db')
-    else:
-        # Use the default
-        access_db_path = args.access_db
-    
-    # Determine start_date and end_date: use command-line args, then config, then None
-    start_date_input = args.start_date
-    if not start_date_input and config.get('start_date'):
-        start_date_input = config.get('start_date')
-    
-    end_date_input = args.end_date
-    if not end_date_input and config.get('end_date'):
-        end_date_input = config.get('end_date')
-    
-    # Create timestamped output directory in project root
-    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(script_dir)
-    output_base = os.path.join(project_root, 'output')
-    output_dir = os.path.join(output_base, f'export_{timestamp}')
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Set paths for SQLite and Excel outputs
-    sqlite_path = os.path.join(output_dir, 'timekeeping_export.db')
-    excel_dir = os.path.join(output_dir, 'excel')
-    
-    # Convert dates to Access format (MM/DD/YYYY)
-    start_date = None
-    end_date = None
-    
-    if start_date_input:
-        try:
-            for fmt in ['%m-%d-%Y', '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y', '%d-%m-%Y']:
-                try:
-                    dt = datetime.datetime.strptime(start_date_input, fmt)
-                    start_date = dt.strftime('%m/%d/%Y')
-                    break
-                except ValueError:
-                    continue
-            if not start_date:
-                raise ValueError(f"Could not parse start date: {start_date_input}")
-        except Exception as e:
-            print(f"ERROR: Invalid start date format: {e}")
-            print("Use format: MM-DD-YYYY, YYYY-MM-DD, or MM/DD/YYYY")
-            sys.exit(1)
-    
-    if end_date_input:
-        try:
-            for fmt in ['%m-%d-%Y', '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y', '%d-%m-%Y']:
-                try:
-                    dt = datetime.datetime.strptime(end_date_input, fmt)
-                    end_date = dt.strftime('%m/%d/%Y')
-                    break
-                except ValueError:
-                    continue
-            if not end_date:
-                raise ValueError(f"Could not parse end date: {end_date_input}")
-        except Exception as e:
-            print(f"ERROR: Invalid end date format: {e}")
-            print("Use format: MM-DD-YYYY, YYYY-MM-DD, or MM/DD/YYYY")
-            sys.exit(1)
-    
-    # Check if database file exists
-    if not os.path.isfile(access_db_path):
-        print(f"ERROR: Access database file not found: {access_db_path}")
-        sys.exit(1)
-    
-    # Export to SQLite and Excel
-    try:
-        print("="*60)
-        print("EXPORTING ACCESS DATABASE TO SQLITE AND EXCEL")
-        print("="*60)
-        print(f"Source: {access_db_path}")
-        print(f"Output directory: {output_dir}")
-        print(f"SQLite output: {sqlite_path}")
-        print(f"Excel output directory: {excel_dir}")
-        print(f"Tables: {MAIN_TABLE}, {', '.join(RELATED_TABLES)}")
-        if args.filter_project:
-            print(f"Filter tblProject: Yes (only projectids in {MAIN_TABLE})")
-        if start_date or end_date:
-            print(f"Date filter on {MAIN_TABLE}: ", end='')
-            if start_date and end_date:
-                print(f"{start_date} to {end_date}")
-            elif start_date:
-                print(f"from {start_date}")
-            elif end_date:
-                print(f"up to {end_date}")
-        print("="*60)
-        
-        stats = export_to_sqlite_and_excel(
-            access_db_path,
-            sqlite_path,
-            excel_dir,
-            date_field=args.date_field if (start_date or end_date) else None,
-            start_date=start_date,
-            end_date=end_date,
-            filter_project=args.filter_project
+        )
+        parser.add_argument(
+            '--access-db',
+            type=str,
+            default=ACCESS_DB,
+            help=f'Path to the Access database file (default: {ACCESS_DB})'
+        )
+        parser.add_argument(
+            '--start-date',
+            type=str,
+            help='Start date for filtering (format: YYYY-MM-DD or MM/DD/YYYY)'
+        )
+        parser.add_argument(
+            '--end-date',
+            type=str,
+            help='End date for filtering (format: YYYY-MM-DD or MM/DD/YYYY)'
+        )
+        parser.add_argument(
+            '--date-field',
+            type=str,
+            default=DATE_FIELD,
+            help=f'Name of the date field in the main table (default: {DATE_FIELD})'
+        )
+        parser.add_argument(
+            '--output-dir',
+            type=str,
+            default='output',
+            help='Base output directory (default: output). A timestamped subfolder will be created.'
+        )
+        parser.add_argument(
+            '--filter-project',
+            action='store_true',
+            help='Filter tblProject to only include projects with projectid in tblClientBilling'
+        )
+        parser.add_argument(
+            '--delete',
+            action='store_true',
+            help='Prompt to delete records from main table after export'
+        )
+        parser.add_argument(
+            '--dump',
+            action='store_true',
+            help='Dump/display the contents of the SQLite database after export'
         )
         
-        print("\n" + "="*60)
-        print("EXPORT SUMMARY")
-        print("="*60)
-        for table, count in stats.items():
-            print(f"  {table}: {count} rows")
-        print("="*60)
-        print(f"\nOutput saved to: {output_dir}")
-        print("\nSUCCESS: All tables exported successfully!")
+        args = parser.parse_args()
         
-        # Dump SQLite database if requested
-        if args.dump:
-            dump_sqlite_database(sqlite_path)
+        # Load configuration from config.yaml
+        config = load_config()
         
-    except Exception as e:
-        print(f"\nERROR: Failed to export tables: {e}")
-        traceback.print_exc()
-        sys.exit(1)
-    
-    # Only prompt to delete if --delete flag is set
-    if not args.delete:
-        print("\nRecords were NOT deleted from Access database.")
-        print(f"(Use --delete flag to enable deletion of {MAIN_TABLE} records)")
-        print("\nScript completed successfully.")
-        return
-    
-    # Prompt to delete records from main table only
-    print(f"\n{'='*60}")
-    if start_date or end_date:
-        print(f"WARNING: You are about to DELETE FILTERED ROWS from '{MAIN_TABLE}'")
-        if start_date and end_date:
-            print(f"Date range: {start_date} to {end_date}")
-        elif start_date:
-            print(f"From: {start_date} onwards")
-        elif end_date:
-            print(f"Up to: {end_date}")
-    else:
-        print(f"WARNING: You are about to DELETE ALL ROWS from '{MAIN_TABLE}'")
-    print(f"Note: {', '.join(RELATED_TABLES)} will NOT be modified")
-    print(f"{'='*60}")
-    response = input("Do you want to delete these records? (yes/no): ").strip().lower()
-    
-    if response in ("y", "yes"):
+        # Determine the Access database path: use command-line arg, then config, then default
+        if args.access_db != ACCESS_DB:
+            # User provided a command-line argument
+            access_db_path = args.access_db
+        elif config.get('path_to_access_db'):
+            # Use value from config.yaml
+            access_db_path = config.get('path_to_access_db')
+        else:
+            # Use the default
+            access_db_path = args.access_db
+        
+        # Determine start_date and end_date: use command-line args, then config, then None
+        start_date_input = args.start_date
+        if not start_date_input and config.get('start_date'):
+            start_date_input = config.get('start_date')
+        
+        end_date_input = args.end_date
+        if not end_date_input and config.get('end_date'):
+            end_date_input = config.get('end_date')
+        
+        # Create timestamped output directory in project root
+        timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(script_dir)
+        output_base = os.path.join(project_root, 'output')
+        output_dir = os.path.join(output_base, f'export_{timestamp}')
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Set paths for SQLite and Excel outputs
+        sqlite_path = os.path.join(output_dir, 'timekeeping_export.db')
+        excel_dir = os.path.join(output_dir, 'excel')
+        
+        # Convert dates to Access format (MM/DD/YYYY)
+        start_date = None
+        end_date = None
+        
+        if start_date_input:
+            try:
+                for fmt in ['%m-%d-%Y', '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y', '%d-%m-%Y']:
+                    try:
+                        dt = datetime.datetime.strptime(start_date_input, fmt)
+                        start_date = dt.strftime('%m/%d/%Y')
+                        break
+                    except ValueError:
+                        continue
+                if not start_date:
+                    raise ValueError(f"Could not parse start date: {start_date_input}")
+            except Exception as e:
+                print(f"ERROR: Invalid start date format: {e}")
+                print("Use format: MM-DD-YYYY, YYYY-MM-DD, or MM/DD/YYYY")
+                sys.exit(1)
+        
+        if end_date_input:
+            try:
+                for fmt in ['%m-%d-%Y', '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y', '%d-%m-%Y']:
+                    try:
+                        dt = datetime.datetime.strptime(end_date_input, fmt)
+                        end_date = dt.strftime('%m/%d/%Y')
+                        break
+                    except ValueError:
+                        continue
+                if not end_date:
+                    raise ValueError(f"Could not parse end date: {end_date_input}")
+            except Exception as e:
+                print(f"ERROR: Invalid end date format: {e}")
+                print("Use format: MM-DD-YYYY, YYYY-MM-DD, or MM/DD/YYYY")
+                sys.exit(1)
+        
+        # Check if database file exists
+        if not os.path.isfile(access_db_path):
+            print(f"ERROR: Access database file not found: {access_db_path}")
+            sys.exit(1)
+        
+        # Export to SQLite and Excel
         try:
-            print(f"\nDeleting records from '{MAIN_TABLE}'...")
-            delete_records_from_access(
+            print("="*60)
+            print("EXPORTING ACCESS DATABASE TO SQLITE AND EXCEL")
+            print("="*60)
+            print(f"Source: {access_db_path}")
+            print(f"Output directory: {output_dir}")
+            print(f"SQLite output: {sqlite_path}")
+            print(f"Excel output directory: {excel_dir}")
+            print(f"Tables: {MAIN_TABLE}, {', '.join(RELATED_TABLES)}")
+            if args.filter_project:
+                print(f"Filter tblProject: Yes (only projectids in {MAIN_TABLE})")
+            if start_date or end_date:
+                print(f"Date filter on {MAIN_TABLE}: ", end='')
+                if start_date and end_date:
+                    print(f"{start_date} to {end_date}")
+                elif start_date:
+                    print(f"from {start_date}")
+                elif end_date:
+                    print(f"up to {end_date}")
+            print("="*60)
+            
+            stats = export_to_sqlite_and_excel(
                 access_db_path,
-                MAIN_TABLE,
+                sqlite_path,
+                excel_dir,
                 date_field=args.date_field if (start_date or end_date) else None,
                 start_date=start_date,
-                end_date=end_date
+                end_date=end_date,
+                filter_project=args.filter_project
             )
-            print(f"SUCCESS: Records have been deleted from '{MAIN_TABLE}'.")
+            
+            print("\n" + "="*60)
+            print("EXPORT SUMMARY")
+            print("="*60)
+            for table, count in stats.items():
+                print(f"  {table}: {count} rows")
+            print("="*60)
+            print(f"\nOutput saved to: {output_dir}")
+            print("\nSUCCESS: All tables exported successfully!")
+            
+            # Dump SQLite database if requested
+            if args.dump:
+                dump_sqlite_database(sqlite_path)
+            
         except Exception as e:
-            print(f"ERROR: Failed to delete records: {e}")
+            print(f"\nERROR: Failed to export tables: {e}")
             traceback.print_exc()
             sys.exit(1)
-    else:
-        print(f"\n'{MAIN_TABLE}' was NOT modified.")
-    
-    print("\nScript completed successfully.")
-    
-    # Clean up any lingering Access processes
-    cleanup_access_processes()
+        
+        # Only prompt to delete if --delete flag is set
+        if not args.delete:
+            print("\nRecords were NOT deleted from Access database.")
+            print(f"(Use --delete flag to enable deletion of {MAIN_TABLE} records)")
+            print("\nScript completed successfully.")
+            return
+        
+        # Prompt to delete records from main table only
+        print(f"\n{'='*60}")
+        if start_date or end_date:
+            print(f"WARNING: You are about to DELETE FILTERED ROWS from '{MAIN_TABLE}'")
+            if start_date and end_date:
+                print(f"Date range: {start_date} to {end_date}")
+            elif start_date:
+                print(f"From: {start_date} onwards")
+            elif end_date:
+                print(f"Up to: {end_date}")
+        else:
+            print(f"WARNING: You are about to DELETE ALL ROWS from '{MAIN_TABLE}'")
+        print(f"Note: {', '.join(RELATED_TABLES)} will NOT be modified")
+        print(f"{'='*60}")
+        response = input("Do you want to delete these records? (yes/no): ").strip().lower()
+        
+        if response in ("y", "yes"):
+            try:
+                print(f"\nDeleting records from '{MAIN_TABLE}'...")
+                delete_records_from_access(
+                    access_db_path,
+                    MAIN_TABLE,
+                    date_field=args.date_field if (start_date or end_date) else None,
+                    start_date=start_date,
+                    end_date=end_date
+                )
+                print(f"SUCCESS: Records have been deleted from '{MAIN_TABLE}'.")
+            except Exception as e:
+                print(f"ERROR: Failed to delete records: {e}")
+                traceback.print_exc()
+                sys.exit(1)
+        else:
+            print(f"\n'{MAIN_TABLE}' was NOT modified.")
+        
+        print("\nScript completed successfully.")
+        
+        # Clean up any lingering Access processes
+        cleanup_access_processes()
+    finally:
+        pythoncom.CoUninitialize()
 
 
 if __name__ == "__main__":

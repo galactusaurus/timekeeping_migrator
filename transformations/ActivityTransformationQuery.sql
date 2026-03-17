@@ -61,7 +61,7 @@ update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' 
 update tblPayItem set workdescription = 'Real Time GPS (Trimble System) 1 Man Crew:' where workdescription collate nocase = 'Real Time GPS ( Trimble System )  1 Man Crew';
 update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription collate nocase = 'REAL TIME GPS (TRIMBLE R10) SYSTEM';
 update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription collate nocase = 'REAL TIME GPS- 2 MAN CREW';
-update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription collate nocase = 'Real time GPS(Trimble R8, R10, R12 system) 2 man c';
+update tblPayItem set workdescription = 'Real Time GPS (Trimble R8, R10, R12 system) 2-Man Crew:' where workdescription collate nocase = 'Real time GPS(Trimble R8, R10, R12 system) 2 man c';
 update tblPayItem set workdescription = 'Real Time GPS-2 Man (Trimble System):' where workdescription collate nocase = 'Real Time GPS-2 man ( Trimble System )';
 update tblPayItem set workdescription = 'Registered Professional Land Surveyor:' where workdescription collate nocase = 'Registered Professional Land Surveyor';
 update tblPayItem set workdescription = 'Robotic TS - One Man Crew:' where workdescription collate nocase = 'ROBOTIC TS- 1 MAN CREW';

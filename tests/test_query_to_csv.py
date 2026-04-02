@@ -18,7 +18,8 @@ from query_to_csv import (
     load_config,
     find_latest_export_db,
     query_to_csv,
-    get_project_root
+    get_project_root,
+    split_csv_by_rowcount
 )
 
 
@@ -449,5 +450,237 @@ class TestRelativePaths:
             rows = list(reader)
             assert len(rows) == 2  # Header + 1 data row
             assert rows[1][1] == 'Alice'
+
+
+class TestSplitCsvByRowcount:
+    """Test the split_csv_by_rowcount function."""
+
+    def test_split_csv_basic(self, tmp_path):
+        """Test basic CSV splitting by rowcount."""
+        # Create test CSV with 10 rows
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name', 'value'])
+            for i in range(10):
+                writer.writerow([i, f'Name{i}', i * 10])
+
+        # Split into files with 3 rows each
+        split_files = split_csv_by_rowcount(str(csv_file), 3)
+
+        # Should create 4 files (3+3+3+1)
+        assert len(split_files) == 4
+
+        # Verify splits directory was created
+        splits_dir = tmp_path / 'splits'
+        assert splits_dir.exists()
+
+        # Verify each file
+        for i, split_file in enumerate(split_files):
+            assert os.path.exists(split_file)
+            with open(split_file, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                rows = list(reader)
+                # First row should be header
+                assert rows[0] == ['id', 'name', 'value']
+                # Check row count (excluding header)
+                if i < 3:  # First 3 files have 3 rows
+                    assert len(rows) == 4  # 1 header + 3 data
+                else:  # Last file has 1 row
+                    assert len(rows) == 2  # 1 header + 1 data
+
+    def test_split_csv_exact_division(self, tmp_path):
+        """Test splitting when row count divides evenly."""
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name'])
+            for i in range(6):
+                writer.writerow([i, f'Name{i}'])
+
+        # Split into files with 2 rows each
+        split_files = split_csv_by_rowcount(str(csv_file), 2)
+
+        # Should create exactly 3 files (2+2+2)
+        assert len(split_files) == 3
+
+        for split_file in split_files:
+            with open(split_file, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                rows = list(reader)
+                assert len(rows) == 3  # 1 header + 2 data rows
+
+    def test_split_csv_single_row_per_file(self, tmp_path):
+        """Test splitting with 1 row per file."""
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name'])
+            for i in range(3):
+                writer.writerow([i, f'Name{i}'])
+
+        split_files = split_csv_by_rowcount(str(csv_file), 1)
+
+        # Should create 3 files
+        assert len(split_files) == 3
+
+        for split_file in split_files:
+            with open(split_file, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                rows = list(reader)
+                assert len(rows) == 2  # 1 header + 1 data row
+
+    def test_split_csv_rowcount_larger_than_data(self, tmp_path):
+        """Test splitting when rowcount is larger than number of rows."""
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name'])
+            for i in range(5):
+                writer.writerow([i, f'Name{i}'])
+
+        # Rowcount larger than data
+        split_files = split_csv_by_rowcount(str(csv_file), 100)
+
+        # Should create 1 file with all rows
+        assert len(split_files) == 1
+
+        with open(split_files[0], 'r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            rows = list(reader)
+            assert len(rows) == 6  # 1 header + 5 data rows
+
+    def test_split_csv_zero_rowcount(self, tmp_path):
+        """Test that zero rowcount disables splitting."""
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name'])
+            writer.writerow([1, 'Name1'])
+
+        split_files = split_csv_by_rowcount(str(csv_file), 0)
+
+        # Should return empty list
+        assert len(split_files) == 0
+
+        # Splits directory may or may not be created
+        # Just verify original file still exists
+        assert csv_file.exists()
+
+    def test_split_csv_negative_rowcount(self, tmp_path):
+        """Test that negative rowcount disables splitting."""
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name'])
+            writer.writerow([1, 'Name1'])
+
+        split_files = split_csv_by_rowcount(str(csv_file), -5)
+
+        # Should return empty list
+        assert len(split_files) == 0
+
+    def test_split_csv_with_special_characters(self, tmp_path):
+        """Test splitting CSV with special characters in data."""
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name', 'description'])
+            writer.writerow([1, 'John, Jr.', 'Has a comma'])
+            writer.writerow([2, 'Jane "Doe"', 'Has quotes'])
+            writer.writerow([3, 'Bob\nSmith', 'Has newline'])
+
+        split_files = split_csv_by_rowcount(str(csv_file), 2)
+
+        # Should create 2 files
+        assert len(split_files) == 2
+
+        # Verify data integrity
+        all_rows = []
+        for split_file in split_files:
+            with open(split_file, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                rows = list(reader)
+                all_rows.extend(rows[1:])  # Skip header
+
+        assert len(all_rows) == 3
+        assert all_rows[0][1] == 'John, Jr.'
+        assert all_rows[1][1] == 'Jane "Doe"'
+
+    def test_split_csv_empty_file(self, tmp_path):
+        """Test splitting an empty CSV (header only)."""
+        csv_file = tmp_path / "test.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name'])
+
+        split_files = split_csv_by_rowcount(str(csv_file), 10)
+
+        # Should create 0 files since there's no data
+        assert len(split_files) == 0
+
+
+class TestQueryToCsvWithSplitting:
+    """Test the query_to_csv function with splitting enabled."""
+
+    def test_query_to_csv_with_split(self, tmp_path):
+        """Test executing a query and splitting output."""
+        # Create test database
+        db_path = tmp_path / "test.db"
+        conn = sqlite3.connect(str(db_path))
+        conn.execute("CREATE TABLE users (id INTEGER, name TEXT)")
+        for i in range(10):
+            conn.execute(f"INSERT INTO users VALUES ({i}, 'User{i}')")
+        conn.commit()
+        conn.close()
+
+        # Create query file
+        query_file = tmp_path / "query.sql"
+        query_file.write_text("SELECT * FROM users;", encoding='utf-8')
+
+        # Output CSV
+        output_csv = tmp_path / "results.csv"
+
+        # Execute with splitting
+        query_to_csv(str(db_path), str(query_file), str(output_csv), split_rowcount=3)
+
+        # Verify main CSV was created
+        assert output_csv.exists()
+
+        # Verify splits directory was created
+        splits_dir = tmp_path / 'splits'
+        assert splits_dir.exists()
+
+        # Verify split files were created (10 rows, 3 per file = 4 files)
+        split_files = list(splits_dir.glob('results_part*.csv'))
+        assert len(split_files) == 4
+
+    def test_query_to_csv_no_split_when_zero(self, tmp_path):
+        """Test that split_rowcount=0 doesn't create splits."""
+        # Create test database
+        db_path = tmp_path / "test.db"
+        conn = sqlite3.connect(str(db_path))
+        conn.execute("CREATE TABLE users (id INTEGER, name TEXT)")
+        conn.execute("INSERT INTO users VALUES (1, 'John')")
+        conn.commit()
+        conn.close()
+
+        # Create query file
+        query_file = tmp_path / "query.sql"
+        query_file.write_text("SELECT * FROM users;", encoding='utf-8')
+
+        # Output CSV
+        output_csv = tmp_path / "results.csv"
+
+        # Execute without splitting
+        query_to_csv(str(db_path), str(query_file), str(output_csv), split_rowcount=0)
+
+        # Verify main CSV was created
+        assert output_csv.exists()
+
+        # Verify splits directory was NOT created
+        splits_dir = tmp_path / 'splits'
+        assert not splits_dir.exists()
+
 
 

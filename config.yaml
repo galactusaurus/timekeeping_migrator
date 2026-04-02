@@ -25,6 +25,8 @@ sqlite_database_path: ""
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # SQL query file to use for exporting data
 query_file_used: ".\\BQE_Export_Query.sql"
+# Split output CSV by rowcount (set to 0 to disable splitting)
+split_output_by_rowcount: 0
 
 ###### CSV Validation Params
 # Regex validation rules for exported CSV files

@@ -18,7 +18,8 @@ from run_transformations import (
     read_sql_file,
     parse_sql_commands,
     execute_transformation_scripts,
-    find_latest_export_db
+    find_latest_export_db,
+    get_output_directory
 )
 
 
@@ -151,6 +152,15 @@ class TestParseSqlCommands:
         
         # Comment is included in the command
         assert len(commands) == 1
+    
+    def test_parse_command_without_trailing_semicolon(self):
+        """Test parsing a command without trailing semicolon."""
+        sql = "SELECT * FROM users"  # No semicolon
+        
+        commands = parse_sql_commands(sql)
+        
+        assert len(commands) == 1
+        assert commands[0] == "SELECT * FROM users"
 
 
 class TestExecuteTransformationScripts:
@@ -359,3 +369,126 @@ class TestFindLatestExportDb:
         latest_db = find_latest_export_db()
         
         assert latest_db is None
+
+
+class TestGetOutputDirectory:
+    """Test the get_output_directory function."""
+    
+    def test_get_output_directory_creates_if_not_exists(self, tmp_path, monkeypatch):
+        """Test that get_output_directory creates the directory if it doesn't exist."""
+        def mock_get_project_root():
+            return str(tmp_path)
+        
+        monkeypatch.setattr('run_transformations.get_project_root', mock_get_project_root)
+        
+        output_dir = get_output_directory()
+        
+        assert output_dir == str(tmp_path / "output")
+        assert os.path.exists(output_dir)
+        assert os.path.isdir(output_dir)
+    
+    def test_get_output_directory_returns_existing(self, tmp_path, monkeypatch):
+        """Test that get_output_directory returns existing directory."""
+        # Create output directory first
+        output = tmp_path / "output"
+        output.mkdir()
+        
+        def mock_get_project_root():
+            return str(tmp_path)
+        
+        monkeypatch.setattr('run_transformations.get_project_root', mock_get_project_root)
+        
+        output_dir = get_output_directory()
+        
+        assert output_dir == str(output)
+
+
+class TestReadSqlFile:
+    """Test the read_sql_file function."""
+    
+    def test_read_sql_file_with_relative_path(self, tmp_path, monkeypatch):
+        """Test reading SQL file with relative path."""
+        # Create SQL file
+        sql_file = tmp_path / "query.sql"
+        sql_file.write_text("SELECT * FROM users;")
+        
+        def mock_get_project_root():
+            return str(tmp_path)
+        
+        monkeypatch.setattr('run_transformations.get_project_root', mock_get_project_root)
+        
+        content = read_sql_file("query.sql")
+        
+        assert content == "SELECT * FROM users;"
+    
+    def test_read_sql_file_with_absolute_path(self, tmp_path):
+        """Test reading SQL file with absolute path."""
+        # Create SQL file with absolute path
+        sql_file = tmp_path / "query.sql"
+        sql_file.write_text("SELECT * FROM accounts;")
+        
+        content = read_sql_file(str(sql_file))
+        
+        assert content == "SELECT * FROM accounts;"
+
+
+class TestExecuteTransformationScripts:
+    """Additional tests for execute_transformation_scripts."""
+    
+    def test_execute_script_with_absolute_path(self, tmp_path, monkeypatch):
+        """Test executing script with absolute path."""
+        # Create database
+        db_path = tmp_path / "test.db"
+        conn = sqlite3.connect(str(db_path))
+        conn.execute("CREATE TABLE users (id INTEGER, name TEXT)")
+        conn.commit()
+        conn.close()
+        
+        # Create SQL script with absolute path
+        script = tmp_path / "transform.sql"
+        script.write_text("INSERT INTO users VALUES (1, 'Alice');")
+        
+        log_file = tmp_path / "log.txt"
+        
+        def mock_get_project_root():
+            return str(tmp_path)
+        
+        monkeypatch.setattr('run_transformations.get_project_root', mock_get_project_root)
+        
+        success, log_entries = execute_transformation_scripts(
+            str(db_path),
+            [str(script)],  # Absolute path
+            str(log_file)
+        )
+        
+        assert success is True
+        assert log_file.exists()
+        
+        # Verify data was inserted
+        conn = sqlite3.connect(str(db_path))
+        cursor = conn.execute("SELECT * FROM users")
+        rows = cursor.fetchall()
+        conn.close()
+        
+        assert len(rows) == 1
+        assert rows[0] == (1, 'Alice')
+
+
+class TestLoadConfigWithCustomPath:
+    """Test load_config with custom path."""
+    
+    def test_load_config_with_custom_path(self, tmp_path):
+        """Test load_config when provided with a custom config path."""
+        config_file = tmp_path / "custom_config.yaml"
+        config_file.write_text("database_path: /custom/path.db\n")
+        
+        config = load_config(str(config_file))
+        
+        assert 'database_path' in config
+        assert config['database_path'] == '/custom/path.db'
+    
+    def test_load_config_custom_path_not_exists(self, tmp_path):
+        """Test load_config when custom path doesn't exist."""
+        config = load_config(str(tmp_path / "nonexistent.yaml"))
+        
+        assert config == {}

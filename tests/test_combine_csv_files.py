@@ -100,6 +100,12 @@ class TestCombineCsvFiles:
             reader = csv.DictReader(f)
             combined_rows = list(reader)
             assert len(combined_rows) == 4
+            
+            # Verify all rows from both files are present
+            names = [row['Name'] for row in combined_rows]
+            ages = [row['Age'] for row in combined_rows]
+            assert 'John' in names and 'Jane' in names and 'Bob' in names and 'Alice' in names
+            assert '30' in ages and '25' in ages and '35' in ages and '28' in ages
     
     def test_combine_with_deduplication(self, tmp_path):
         """Test combining CSV files with deduplication."""
@@ -130,6 +136,14 @@ class TestCombineCsvFiles:
             reader = csv.DictReader(f)
             combined_rows = list(reader)
             assert len(combined_rows) == 3
+            
+            # Verify John appears only once (deduplicated) and other names are present
+            names = [row['Name'] for row in combined_rows]
+            assert names.count('John') == 1  # Duplicate removed
+            assert 'Jane' in names and 'Bob' in names
+            # Verify the correct ages are present
+            ages = [row['Age'] for row in combined_rows]
+            assert '30' in ages and '25' in ages and '35' in ages
     
     def test_combine_with_key_deduplication(self, tmp_path):
         """Test combining CSV files with key-based deduplication."""

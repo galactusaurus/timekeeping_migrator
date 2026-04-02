@@ -242,3 +242,167 @@ class TestCSVValidator:
         
         assert report['total_errors'] == 0
         assert report['total_warnings'] == 0
+    
+    def test_find_latest_csv_with_results_files_in_root(self, config_file, tmp_path):
+        """Test finding latest CSV when results_ files exist in root directory."""
+        validator = CSVValidator(config_path=config_file)
+        
+        # Change to tmp_path directory
+        original_dir = os.getcwd()
+        try:
+            os.chdir(tmp_path)
+            
+            # Create output directory with a CSV
+            output_dir = tmp_path / "output"
+            output_dir.mkdir()
+            csv1 = output_dir / "old.csv"
+            csv1.write_text("col1\nval1\n", encoding='utf-8')
+            
+            # Create a results_ file in root (should be newer)
+            import time
+            time.sleep(0.01)
+            csv2 = tmp_path / "results_20240101.csv"
+            csv2.write_text("col1\nval2\n", encoding='utf-8')
+            
+            # Find latest should return the results_ file
+            latest = validator.find_latest_csv(str(output_dir))
+            assert latest is not None
+            assert 'results_' in latest
+        finally:
+            os.chdir(original_dir)
+    
+    def test_find_latest_csv_no_csv_files(self, config_file, tmp_path):
+        """Test find_latest_csv when no CSV files exist."""
+        validator = CSVValidator(config_path=config_file)
+        
+        # Create empty output directory
+        output_dir = tmp_path / "output"
+        output_dir.mkdir()
+        
+        latest = validator.find_latest_csv(str(output_dir))
+        assert latest is None
+    
+    def test_validate_row_with_regex_error(self, tmp_path):
+        """Test validate_row with an invalid regex pattern."""
+        config = {
+            'csv_validation_rules': [
+                {
+                    'name': 'Bad Regex',
+                    'column': 'Email',
+                    'regex': '(?P<invalid)',  # Invalid regex
+                    'enabled': True
+                }
+            ]
+        }
+        
+        config_path = tmp_path / "config.yaml"
+        with open(config_path, 'w') as f:
+            yaml.dump(config, f)
+        
+        validator = CSVValidator(config_path=str(config_path))
+        
+        # Create a simple CSV
+        csv_file = tmp_path / "test.csv"
+        csv_file.write_text("Email\ntest@example.com\n", encoding='utf-8')
+        
+        report = validator.validate_csv(str(csv_file))
+        
+        # Should have a warning about regex error
+        assert report['total_warnings'] > 0
+        assert any('regex_error' in str(w) for w in report['warnings'])
+    
+    def test_validate_csv_with_many_errors(self, tmp_path):
+        """Test validate_csv output with more than 5 errors."""
+        config = {
+            'csv_validation_rules': [
+                {
+                    'name': 'Email Format',
+                    'column': 'Email',
+                    'regex': r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                    'enabled': True
+                }
+            ]
+        }
+        
+        config_path = tmp_path / "config.yaml"
+        with open(config_path, 'w') as f:
+            yaml.dump(config, f)
+        
+        # Create CSV with 10 invalid emails
+        csv_content = "Email\n"
+        for i in range(10):
+            csv_content += f"invalid_email_{i}\n"
+        
+        csv_file = tmp_path / "test.csv"
+        csv_file.write_text(csv_content, encoding='utf-8')
+        
+        validator = CSVValidator(config_path=str(config_path))
+        report = validator.validate_csv(str(csv_file))
+        
+        # Should have 10 errors
+        assert report['total_errors'] == 10
+        # The display logic shows "... and X more errors" when > 5
+    
+    def test_save_report_with_default_name(self, config_file, tmp_path):
+        """Test save_report with default timestamp filename."""
+        original_dir = os.getcwd()
+        try:
+            os.chdir(tmp_path)
+            
+            validator = CSVValidator(config_path=config_file)
+            report = {
+                'total_errors': 0,
+                'total_warnings': 0,
+                'errors': [],
+                'warnings': []
+            }
+            
+            # Save with default name (should include timestamp)
+            output_path = validator.save_report(report)
+            
+            assert output_path.startswith('validation_report_')
+            assert output_path.endswith('.json')
+            assert os.path.exists(output_path)
+        finally:
+            os.chdir(original_dir)
+    
+    def test_generate_sql_queries_with_no_errors(self, config_file):
+        """Test generate_sql_queries when there are no errors."""
+        validator = CSVValidator(config_path=config_file)
+        report = {
+            'errors': [],
+            'total_errors': 0
+        }
+        
+        queries = validator.generate_sql_queries(report)
+        assert len(queries) == 0
+    
+    def test_save_sql_queries_with_default_name(self, config_file, tmp_path):
+        """Test save_sql_queries with default timestamp filename."""
+        original_dir = os.getcwd()
+        try:
+            os.chdir(tmp_path)
+            
+            validator = CSVValidator(config_path=config_file)
+            queries = [
+                {
+                    'name': 'Test Query',
+                    'column': 'Email',
+                    'query': 'SELECT * FROM TimeEntries WHERE Email = "bad";'
+                }
+            ]
+            
+            # Save with default name (should include timestamp)
+            output_path = validator.save_sql_queries(queries)
+            
+            assert output_path.startswith('find_bad_values_')
+            assert output_path.endswith('.sql')
+            assert os.path.exists(output_path)
+            
+            # Verify file content
+            with open(output_path, 'r') as f:
+                content = f.read()
+                assert 'Test Query' in content
+                assert 'Email' in content
+        finally:
+            os.chdir(original_dir)

@@ -245,3 +245,40 @@ class TestSplitCsvByColumn:
         assert success is True
         assert output_folder.exists()
         assert output_folder.is_dir()
+    
+    def test_csv_with_no_headers(self, tmp_path):
+        """Test splitting a CSV file with no headers."""
+        input_csv = tmp_path / "input.csv"
+        # Create a CSV with just a newline (no headers)
+        input_csv.write_text("\n", encoding='utf-8')
+        
+        output_folder = tmp_path / "splits"
+        
+        success, files_created, total_rows = split_csv_by_column(
+            str(input_csv),
+            column_name='Project',
+            output_folder=str(output_folder)
+        )
+        
+        assert success is False
+        assert files_created == 0
+        assert total_rows == 0
+    
+    def test_csv_with_malformed_content(self, tmp_path):
+        """Test error handling with problematic files."""
+        input_csv = tmp_path / "input.csv"
+        # Create a file that will cause permission issues by making it a directory
+        input_csv.mkdir()
+        
+        output_folder = tmp_path / "splits"
+        
+        success, files_created, total_rows = split_csv_by_column(
+            str(input_csv),
+            column_name='Project',
+            output_folder=str(output_folder)
+        )
+        
+        # Should handle error gracefully
+        assert success is False
+        assert files_created == 0
+        assert total_rows == 0

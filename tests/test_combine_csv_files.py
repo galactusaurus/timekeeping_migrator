@@ -242,3 +242,46 @@ class TestCombineCsvFiles:
         assert success is True
         assert files_combined == 1
         assert total_rows == 0
+    
+    def test_input_path_is_file_not_folder(self, tmp_path):
+        """Test when input path is a file, not a folder."""
+        # Create a file instead of a folder
+        input_file = tmp_path / "input.txt"
+        input_file.write_text("not a folder")
+        
+        output_file = tmp_path / "combined.csv"
+        
+        success, files_combined, total_rows = combine_csv_files(
+            str(input_file),
+            output_file=str(output_file)
+        )
+        
+        assert success is False
+        assert files_combined == 0
+        assert total_rows == 0
+    
+    def test_combine_with_invalid_key_column(self, tmp_path):
+        """Test combining with key-based deduplication when key column doesn't exist."""
+        input_folder = tmp_path / "input"
+        input_folder.mkdir()
+        
+        csv1 = input_folder / "file1.csv"
+        csv1.write_text("Name,Age\nJohn,30\nJane,25\n", encoding='utf-8')
+        
+        csv2 = input_folder / "file2.csv"
+        csv2.write_text("Name,Age\nJohn,30\nBob,35\n", encoding='utf-8')
+        
+        output_file = tmp_path / "combined.csv"
+        
+        # Try to deduplicate by a key column that doesn't exist
+        success, files_combined, total_rows = combine_csv_files(
+            str(input_folder),
+            output_file=str(output_file),
+            deduplicate=True,
+            key_column="InvalidColumn"
+        )
+        
+        assert success is True
+        assert files_combined == 2
+        # Should fall back to full row deduplication and remove duplicate John
+        assert total_rows == 3

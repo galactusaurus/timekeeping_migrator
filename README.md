@@ -88,11 +88,20 @@ python scripts/run_transformations.py [--database <db.db>] [--latest]
 ```
 
 #### Query to CSV
-Execute a SQL query and export results to CSV.
+Execute a SQL query and export results to CSV, with optional splitting by rowcount.
 
 ```bash
+# Basic usage
 python scripts/query_to_csv.py <output.csv> [--database <db.db>] [--query-file query.sql] [--latest]
+
+# Split output into multiple files with 1000 rows each
+python scripts/query_to_csv.py output.csv --database mydb.db --query-file query.sql --split-rowcount 1000
+
+# Use latest database and split by rowcount
+python scripts/query_to_csv.py results.csv --latest --split-rowcount 500
 ```
+
+The `--split-rowcount` option splits the output CSV into multiple files with the specified number of rows per file (excluding headers). Split files are created in a `splits/` subdirectory next to the output file. Set to 0 or omit to disable splitting.
 
 #### Export to SQLite
 Export Access database tables to SQLite (Windows only).
@@ -140,10 +149,21 @@ Tests are designed to run in CI/CD pipelines and require no external dependencie
 The project uses `config.yaml` for configuration. Key settings include:
 
 ```yaml
+# SQLite database path
 sqlite_database_path: "output/timekeeping_export.db"
+
+# SQL query file for CSV export
+query_file_used: ".\\BQE_Export_Query.sql"
+
+# Split output CSV by rowcount (0 = no splitting)
+split_output_by_rowcount: 0
+
+# SQL transformation scripts
 transformation_scripts:
   - path: "transformations/script1.sql"
     enabled: true
+
+# CSV validation rules
 csv_validation_rules:
   - name: "Email Format"
     column: "Email"

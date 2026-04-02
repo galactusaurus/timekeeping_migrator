@@ -14,6 +14,7 @@ import os
 import argparse
 import yaml
 from datetime import datetime
+from pathlib import Path
 
 
 def load_config():
@@ -42,16 +43,16 @@ def get_project_root():
 def find_latest_export_db():
     """
     Find the most recently created timekeeping_export.db file in the output directory.
-    
+
     Returns:
         Path to the latest timekeeping_export.db file, or None if not found
     """
     project_root = get_project_root()
     output_dir = os.path.join(project_root, 'output')
-    
+
     if not os.path.exists(output_dir):
         return None
-    
+
     # Get all subdirectories in output/
     export_folders = []
     for folder in os.listdir(output_dir):
@@ -62,23 +63,105 @@ def find_latest_export_db():
                 # Get the modification time of the folder
                 mtime = os.path.getmtime(folder_path)
                 export_folders.append((mtime, db_path))
-    
+
     if not export_folders:
         return None
-    
+
     # Sort by modification time (newest first) and return the path
     latest_db = max(export_folders, key=lambda x: x[0])[1]
     return latest_db
 
 
-def query_to_csv(db_path, query_file, output_csv):
+def split_csv_by_rowcount(csv_path, rowcount):
+    """
+    Split a CSV file into multiple files based on rowcount.
+
+    Args:
+        csv_path: Path to the CSV file to split
+        rowcount: Maximum number of rows per file (excluding header)
+
+    Returns:
+        List of paths to the created split files
+    """
+    if rowcount <= 0:
+        return []
+
+    # Create splits directory next to the CSV file
+    csv_file = Path(csv_path)
+    splits_dir = csv_file.parent / 'splits'
+    splits_dir.mkdir(exist_ok=True)
+
+    base_name = csv_file.stem
+    extension = csv_file.suffix
+
+    print(f"\nSplitting CSV by rowcount ({rowcount} rows per file)...")
+    print(f"Output directory: {splits_dir.absolute()}")
+
+    split_files = []
+
+    try:
+        with open(csv_path, 'r', encoding='utf-8') as infile:
+            reader = csv.reader(infile)
+
+            # Read header
+            header = next(reader)
+
+            # Split data into chunks
+            file_num = 1
+            rows_in_current_file = 0
+            current_writer = None
+            current_file = None
+
+            for row in reader:
+                # Create new file if needed
+                if rows_in_current_file == 0:
+                    if current_file:
+                        current_file.close()
+
+                    split_filename = f"{base_name}_part{file_num}{extension}"
+                    split_path = splits_dir / split_filename
+                    split_files.append(str(split_path))
+
+                    current_file = open(split_path, 'w', newline='', encoding='utf-8')
+                    current_writer = csv.writer(current_file)
+                    current_writer.writerow(header)
+
+                    print(f"  Creating {split_filename}...")
+
+                # Write row to current file
+                current_writer.writerow(row)
+                rows_in_current_file += 1
+
+                # Check if we need to start a new file
+                if rows_in_current_file >= rowcount:
+                    rows_in_current_file = 0
+                    file_num += 1
+
+            # Close the last file
+            if current_file:
+                current_file.close()
+
+        print(f"\nCreated {len(split_files)} split file(s)")
+        for split_file in split_files:
+            print(f"  - {Path(split_file).name}")
+
+        return split_files
+
+    except Exception as e:
+        print(f"ERROR: Failed to split CSV - {e}")
+        return []
+
+
+
+def query_to_csv(db_path, query_file, output_csv, split_rowcount=0):
     """
     Execute a SQL query from a file and save results to CSV.
-    
+
     Args:
         db_path: Path to the SQLite database file
         query_file: Path to the SQL query file (can be relative to project root)
         output_csv: Path to the output CSV file
+        split_rowcount: If > 0, split output into multiple files with this many rows each
     """
     try:
         # Resolve relative paths from project root
@@ -118,8 +201,12 @@ def query_to_csv(db_path, query_file, output_csv):
         
         # Close connection
         conn.close()
-        
+
         print(f"\nSuccess! Results saved to {output_csv}")
+
+        # Split CSV by rowcount if requested
+        if split_rowcount > 0:
+            split_csv_by_rowcount(output_csv, split_rowcount)
         
     except FileNotFoundError as e:
         print(f"ERROR: File not found - {e}")
@@ -183,6 +270,12 @@ Examples:
         action='store_true',
         help='Use the most recently created export database from the output/ directory'
     )
+    parser.add_argument(
+        '--split-rowcount',
+        type=int,
+        default=config.get('split_output_by_rowcount', 0),
+        help=f'Split output into multiple files with this many rows each (default from config: {config.get("split_output_by_rowcount", 0)}, 0 = no splitting)'
+    )
     
     args = parser.parse_args()
     
@@ -211,5 +304,5 @@ Examples:
         project_root = get_project_root()
         output_csv = os.path.join(project_root, f'results_{timestamp}.csv')
         print(f"No output filename specified. Using: {output_csv}")
-    
-    query_to_csv(db_path, args.query_file, output_csv)
+
+    query_to_csv(db_path, args.query_file, output_csv, args.split_rowcount)
